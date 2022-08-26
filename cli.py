@@ -1,4 +1,7 @@
 import argparse
+import os
+
+import data
 
 
 def main():
@@ -19,7 +22,8 @@ def parse_args():
 
 
 def init(args):
-    print('Leeroy, Jenkins!')
+    data.init()
+    print(f'Initialized empty ugit repository in {os.getcwd()}/{data.GIT_DIR}')
 
 
 main()
