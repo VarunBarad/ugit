@@ -81,7 +81,11 @@ def commit(message):
     commit_contents += '\n'
     commit_contents += f'{message}\n'
 
-    return data.hash_object(commit_contents.encode(), 'commit')
+    oid = data.hash_object(commit_contents.encode(), 'commit')
+
+    data.set_HEAD(oid)
+
+    return oid
 
 
 def is_ignored(path):
