@@ -109,8 +109,16 @@ def tag(args):
 
 
 def k(args):
+    oids = set()
     for ref_name, ref in data.iter_refs():
         print(ref_name, ref)
+        oids.add(ref)
+
+    for oid in base.iter_commits_and_parents(oids):
+        commit_contents = base.get_commit(oid)
+        print(oid)
+        if commit_contents.parent:
+            print('Parent', commit_contents.parent)
     # ToDo: Visualize refs
 
 main()
