@@ -3,7 +3,7 @@ import operator
 import os
 import string
 
-from collections import namedtuple
+from collections import deque, namedtuple
 
 import data
 
@@ -130,18 +130,19 @@ def get_commit(oid):
 
 
 def iter_commits_and_parents(oids):
-    oids = set(oids)
+    oids = deque(oids)
     visited = set()
 
     while oids:
-        oid = oids.pop()
+        oid = oids.popleft()
         if (not oid) or (oid in visited):
             continue
         visited.add(oid)
         yield oid
 
         commit_contents = get_commit(oid)
-        oids.add(commit_contents.parent)
+        # Return parent next
+        oids.appendleft(commit_contents.parent)
 
 
 def get_oid(name):
