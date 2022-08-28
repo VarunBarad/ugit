@@ -98,10 +98,15 @@ def commit(args):
 
 
 def log(args):
+    refs = {}
+    for ref_name, ref in data.iter_refs():
+        refs.setdefault(ref.value, []).append(ref_name)
+
     for oid in base.iter_commits_and_parents({args.oid}):
         commit_contents = base.get_commit(oid)
 
-        print(f'commit {oid}\n')
+        refs_str = f' ({", ".join(refs[oid])})' if oid in refs else ''
+        print(f'commit {oid}{refs_str}\n')
         print(textwrap.indent(commit_contents.message, '\t'))
         print('')
 
