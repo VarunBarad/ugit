@@ -124,6 +124,11 @@ def create_branch(name, oid):
     data.update_ref(f'refs/heads/{name}', data.RefValue(symbolic=False, value=oid))
 
 
+def iter_branch_names():
+    for ref_name, _ in data.iter_refs(prefix='refs/heads/'):
+        yield os.path.relpath(ref_name, 'refs/heads/')
+
+
 def is_branch(branch):
     return data.get_ref(f'refs/heads/{branch}').value is not None
 
