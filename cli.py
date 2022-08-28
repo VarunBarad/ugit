@@ -6,6 +6,7 @@ import textwrap
 
 import base
 import data
+import diff
 
 
 def main():
@@ -126,7 +127,13 @@ def show(args):
     if not args.oid:
         return
     commit_contents = base.get_commit(args.oid)
+    parent_tree = None
+    if commit_contents.parent:
+        parent_tree = base.get_commit(commit_contents.parent).tree
+
     _print_commit(args.oid, commit_contents)
+    result = diff.diff_trees(base.get_tree(parent_tree), base.get_tree(commit_contents.tree))
+    print(result)
 
 
 def checkout(args):
