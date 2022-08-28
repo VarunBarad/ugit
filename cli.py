@@ -55,6 +55,9 @@ def parse_args():
     tag_parser.add_argument('name')
     tag_parser.add_argument('oid', default='@', type=get_oid, nargs='?')
 
+    k_parser = commands.add_parser('k')
+    k_parser.set_defaults(func=k)
+
     return parser.parse_args()
 
 
@@ -104,5 +107,10 @@ def checkout(args):
 def tag(args):
     base.create_tag(args.name, args.oid)
 
+
+def k(args):
+    for ref_name, ref in data.iter_refs():
+        print(ref_name, ref)
+    # ToDo: Visualize refs
 
 main()
