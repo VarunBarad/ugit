@@ -64,6 +64,9 @@ def parse_args():
     k_parser = commands.add_parser('k')
     k_parser.set_defaults(func=k)
 
+    status_parser = commands.add_parser('status')
+    status_parser.set_defaults(func=status)
+
     return parser.parse_args()
 
 
@@ -137,6 +140,15 @@ def k(args):
 
     with subprocess.Popen(['dot', '-Tpng', '/dev/stdin'], stdin=subprocess.PIPE) as proc:
         proc.communicate(dot.encode())
+
+
+def status(args):
+    HEAD = base.get_oid('@')
+    branch_name = base.get_branch_name()
+    if branch_name:
+        print(f'On branch {branch_name}')
+    else:
+        print(f'HEAD detached at {HEAD[:10]}')
 
 
 main()
