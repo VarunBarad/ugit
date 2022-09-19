@@ -1,4 +1,5 @@
 import hashlib
+import json
 import os
 import shutil
 
@@ -78,6 +79,19 @@ def iter_refs(prefix='', deref=True):
         ref = get_ref(ref_name, deref=deref)
         if ref.value:
             yield ref_name, ref
+
+
+@contextmanager
+def get_index():
+    index = {}
+    if os.path.isfile(f'{GIT_DIR}/index'):
+        with open(f'{GIT_DIR}/index') as f:
+            index = json.load(f)
+
+    yield index
+
+    with open(f'{GIT_DIR}/index', 'w') as f:
+        json.dump(index, f)
 
 
 def hash_object(data, type_='blob'):
